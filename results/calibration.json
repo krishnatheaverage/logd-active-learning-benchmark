@@ -1,0 +1,46 @@
+{
+  "coverage": {
+    "0.5": {
+      "uncalibrated": 0.6560165975103734,
+      "conformal": 0.5029045643153527
+    },
+    "0.8": {
+      "uncalibrated": 0.904149377593361,
+      "conformal": 0.7784232365145228
+    },
+    "0.9": {
+      "uncalibrated": 0.950207468879668,
+      "conformal": 0.8863070539419088
+    },
+    "calib_error": {
+      "uncalibrated": 0.10345781466113413,
+      "conformal": 0.012724757952973712
+    }
+  },
+  "al_ablation": {
+    "ucb_uncalib": {
+      "final_r2": 0.6469331064671828,
+      "recall": 1.0
+    },
+    "ucb_conformal": {
+      "final_r2": 0.634579243252612,
+      "recall": 1.0
+    },
+    "ei_uncalib": {
+      "final_r2": 0.6963596644022598,
+      "recall": 0.9800000000000001
+    },
+    "ei_conformal": {
+      "final_r2": 0.7087279201958039,
+      "recall": 0.9800000000000001
+    },
+    "hybrid_uncalib": {
+      "final_r2": 0.705500720371108,
+      "recall": 0.9
+    },
+    "hybrid_conformal": {
+      "final_r2": 0.705500720371108,
+      "recall": 0.9
+    }
+  }
+}

@@ -1,0 +1,15 @@
+Interval coverage (target = nominal):
+   nominal   uncalibrated    conformal
+      0.50          0.656        0.503
+      0.80          0.904        0.778
+      0.90          0.950        0.886
+  mean calibration error: uncalibrated 0.103  vs  conformal 0.013
+
+AL with vs without conformal calibration (final R2 / recall):
+  ucb      uncalib    R2=0.647 recall=1.00
+  ucb      conformal  R2=0.635 recall=1.00
+  ei       uncalib    R2=0.696 recall=0.98
+  ei       conformal  R2=0.709 recall=0.98
+  hybrid   uncalib    R2=0.706 recall=0.90
+  hybrid   conformal  R2=0.706 recall=0.90
+CALIBRATION_DONE

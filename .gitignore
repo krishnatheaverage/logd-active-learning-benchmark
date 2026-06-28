@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+
+# Third-party source data (Liu et al. JACS Au 2022 SI) - not ours to redistribute
+data/au2c00122_si_002.xlsx

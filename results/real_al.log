@@ -1,0 +1,24 @@
+pool (1202, 2291), log_D range [-4.00,3.59]
+  random       final R2 0.851  top10-recall 0.50  labels->R2=0.85: 404
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:35: RuntimeWarning: Mean of empty slice
+  labels_to_R2_0p85=float(np.nanmean(reach)))
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:37: RuntimeWarning: Mean of empty slice
+  f"labels->R2=0.85: {np.nanmean(reach):.0f}", flush=True)
+  greedy       final R2 0.633  top10-recall 1.00  labels->R2=0.85: nan
+  uncertainty  final R2 0.870  top10-recall 0.38  labels->R2=0.85: 400
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:35: RuntimeWarning: Mean of empty slice
+  labels_to_R2_0p85=float(np.nanmean(reach)))
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:37: RuntimeWarning: Mean of empty slice
+  f"labels->R2=0.85: {np.nanmean(reach):.0f}", flush=True)
+  ucb          final R2 0.701  top10-recall 1.00  labels->R2=0.85: nan
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:35: RuntimeWarning: Mean of empty slice
+  labels_to_R2_0p85=float(np.nanmean(reach)))
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:37: RuntimeWarning: Mean of empty slice
+  f"labels->R2=0.85: {np.nanmean(reach):.0f}", flush=True)
+  ei           final R2 0.776  top10-recall 0.98  labels->R2=0.85: nan
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:35: RuntimeWarning: Mean of empty slice
+  labels_to_R2_0p85=float(np.nanmean(reach)))
+/Users/krishnaharish/actinide-mlp-inverse-design/src/05_active_learning/real_al.py:37: RuntimeWarning: Mean of empty slice
+  f"labels->R2=0.85: {np.nanmean(reach):.0f}", flush=True)
+  hybrid       final R2 0.782  top10-recall 0.93  labels->R2=0.85: nan
+REAL_AL_DONE

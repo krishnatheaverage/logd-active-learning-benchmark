@@ -1,0 +1,120 @@
+\documentclass[journal=jcisd8,manuscript=suppinfo]{achemso}
+\usepackage{amsmath,booktabs,graphicx,siunitx}
+\author{Krishna Harish}
+\affiliation{Lawrence E. Elkins High School, Missouri City, Texas, USA}
+\email{krishnaharish2009@gmail.com}
+\title{Supporting Information: Objective-Dependent Active Learning and Calibrated
+Uncertainty for Sample-Efficient Discovery of Rare-Earth Extractants}
+\begin{document}
+
+\section{Datasets}
+\textbf{$f$-element extraction (primary).} 1{,}202 experimental lanthanide
+distribution coefficients ($\log D$) from Liu et al.\ (1{,}085 training + 117
+validation), with 2{,}291 features per record: ligand ECFP/Morgan bits and RDKit
+physicochemical descriptors, experimental conditions (ligand and acid
+concentration, diluent identity and volume ratio, temperature), and
+lanthanide-identity descriptors. Target range $\log D\in[-4.00,3.59]$. A
+strictly prospective external set of four subsequently synthesised ligands
+(56 ligand$\times$metal measurements) is used only for final validation.
+
+\textbf{Lipophilicity (generality).} 4{,}200 octanol--water $\log D$ values
+(MoleculeNet). Features: 1{,}024-bit Morgan fingerprints (radius 2) concatenated
+with the RDKit physicochemical descriptors above.
+
+\section{Methods}
+\textbf{Surrogate.} Random forest, 300 trees, minimum 2 samples per leaf, features
+standardised. Epistemic uncertainty $\hat\sigma$ is the per-point standard deviation
+across trees.
+
+\textbf{Conformal calibration.} Split-conformal: 20\% of the training data held out
+as a calibration set; nonconformity scores $s_i=|y_i-\hat\mu_i|/\hat\sigma_i$; the
+calibrated interval half-width is $q_\alpha\hat\sigma$ with $q_\alpha$ the empirical
+$\alpha$-quantile of $\{s_i\}$.
+
+\textbf{Active-learning protocol.} Fixed $80/20$ pool/test split. $f$-element:
+seed $=25$, batch $=15$, budget $=420$. Lipophilicity: seed $=40$, batch $=25$,
+budget $=715$. Six random seeds per strategy; curves report mean$\pm$s.d. Top-10
+recall is the fraction of the ten highest-$\log D$ pool members acquired.
+
+\section{Full results}
+
+\begin{table}[h]\centering
+\caption{Active learning on the $f$-element $\log D$ benchmark (pool $962$,
+test $240$). $R^2$ at fixed budget; final $R^2$ and top-10 recall at budget $430$;
+measurements to reach $R^2\!=\!0.85$.}
+\begin{tabular}{lccccc}
+\toprule
+strategy & $R^2$@100 & $R^2$@250 & final $R^2$ & recall & labels$\to$0.85 \\
+\midrule
+random      & 0.543 & 0.754 & 0.851 & 0.50 & 404 \\
+greedy      & 0.272 & 0.506 & 0.633 & 1.00 & n/a \\
+uncertainty & 0.396 & 0.679 & 0.870 & 0.38 & 400 \\
+UCB         & 0.438 & 0.600 & 0.701 & 1.00 & n/a \\
+EI          & 0.379 & 0.664 & 0.776 & 0.98 & n/a \\
+hybrid      & 0.379 & n/a    & 0.782 & 0.93 & n/a \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]\centering
+\caption{Active learning on the Lipophilicity benchmark (pool $3360$, test $840$),
+Morgan-fingerprint features. Final values at budget $715$.}
+\begin{tabular}{lcccc}
+\toprule
+strategy & $R^2$@150 & final $R^2$ & recall \\
+\midrule
+random      & 0.253 & 0.497 & 0.27 \\
+greedy      & 0.105 & 0.206 & 0.53 \\
+uncertainty & 0.212 & 0.501 & 0.20 \\
+UCB         & 0.139 & 0.281 & 0.57 \\
+EI          & 0.143 & 0.309 & 0.53 \\
+hybrid      & 0.165 & 0.384 & 0.30 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]\centering
+\caption{Uncertainty calibration ($f$-element benchmark, 10 seeds). Empirical
+coverage of nominal-$\alpha$ intervals.}
+\begin{tabular}{lcc}
+\toprule
+nominal $\alpha$ & uncalibrated & conformal \\
+\midrule
+0.50 & 0.656 & 0.503 \\
+0.80 & 0.904 & 0.778 \\
+0.90 & 0.950 & 0.886 \\
+\midrule
+mean calib.\ error & 0.103 & 0.013 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]\centering
+\caption{Active learning with vs.\ without conformal calibration (final $R^2$ /
+top-10 recall). Acquisition performance is unchanged within noise.}
+\begin{tabular}{lcc}
+\toprule
+strategy & uncalibrated & conformal \\
+\midrule
+UCB    & 0.647 / 1.00 & 0.635 / 1.00 \\
+EI     & 0.696 / 0.98 & 0.709 / 0.98 \\
+hybrid & 0.706 / 0.90 & 0.706 / 0.90 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Baseline and prospective validation}
+A random forest trained on the published training split attains $R^2=0.942$,
+RMSE$=0.328$ on the validation split (cf.\ the reported deep network $R^2=0.85$,
+RMSE$=0.53$). Trained on all 1{,}202 measurements and applied to the four
+prospective ligands, it attains $R^2=0.687$, RMSE$=0.639$, MAE$=0.502$ log units.
+
+\section{Reproduction}
+All code is released (concept DOI 10.5281/zenodo.20764583). The experiments are
+reproduced by \texttt{src/05\_active\_learning/}: \texttt{real\_data.py} (baseline),
+\texttt{real\_al.py} ($f$-element AL), \texttt{lipo\_al.py} (Lipophilicity AL),
+\texttt{al\_calibration.py} (calibration), \texttt{prospective.py} (prospective
+validation). The $f$-element source data are from Liu et al.\ (cited); the
+Lipophilicity set is from MoleculeNet.
+
+\end{document}
