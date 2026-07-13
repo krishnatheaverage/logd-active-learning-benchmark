@@ -1,0 +1,6 @@
+raw cov 0.720 (mce 0.063) | conformal cov 0.897 (mce 0.130) | mondrian cov 0.866
+conformal coverage by logD bin: {'high': 0.87, 'low': 0.87, 'mid': 0.92}
+mondrian coverage by logD bin : {'high': 0.88, 'low': 0.96, 'mid': 0.82}
+rank corr conformal vs mondrian: 0.846
+prospective coverage: 0.875
+E4_DONE

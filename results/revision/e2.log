@@ -1,0 +1,7 @@
+random       final R2 0.297  final top10-ligand-recall 0.83
+greedy       final R2 0.287  final top10-ligand-recall 1.00
+uncertainty  final R2 0.167  final top10-ligand-recall 0.83
+ucb          final R2 0.254  final top10-ligand-recall 0.97
+ei           final R2 0.126  final top10-ligand-recall 0.98
+hybrid       final R2 0.241  final top10-ligand-recall 0.92
+E2_DONE

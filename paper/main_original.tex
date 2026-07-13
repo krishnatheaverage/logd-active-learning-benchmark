@@ -1,0 +1,222 @@
+\documentclass[journal=acsodf,manuscript=article]{achemso}
+\usepackage[version=4]{mhchem}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+
+\author{Krishna Harish}
+\affiliation{Lawrence E. Elkins High School, Missouri City, Texas, USA}
+\email{krishnaharish2009@gmail.com}
+
+\title{Objective-Dependent Active Learning and Calibrated Uncertainty for
+Sample-Efficient Discovery of Rare-Earth Extractants: A Benchmark on 1{,}202
+Experimental Distribution Coefficients with Prospective Validation}
+
+\abbreviations{AL,UQ,RF,DNN,logD}
+\keywords{active learning, uncertainty quantification, conformal prediction,
+solvent extraction, rare-earth separation, benchmark}
+
+\begin{document}
+
+\begin{abstract}
+Measuring distribution coefficients ($\log D$) for rare-earth solvent extraction is
+slow and expensive, making sample-efficient machine learning attractive, but the
+practical question of \emph{which} acquisition strategy to use, and whether the
+attendant uncertainty estimates can be trusted, is rarely answered on real data. We
+benchmark active learning (AL) on 1{,}202 experimental $\log D$ measurements for
+lanthanide extraction, with prospective validation on four independently
+synthesised ligands. Four findings emerge, each on real data with multi-seed
+statistics. (i)~A plain random forest on standard features reaches
+$R^2=0.94$/RMSE$=0.33$ on the published validation split, outperforming the
+previously reported deep network ($R^2=0.85$). (ii)~The optimal AL acquisition is
+\emph{objective-dependent}: pure exploitation recovers all top extractants
+(top-10 recall $=1.0$) but yields a biased, poorly predictive model
+($R^2=0.63$), whereas exploration/random gives the best predictive model
+($R^2\approx0.85$) but finds few of the best extractants (recall $0.38$--$0.50$);
+no strategy dominates both, and balanced acquisition (expected improvement, a
+half-exploit/half-explore portfolio) traces the Pareto front; the same dichotomy
+reproduces on an independent 4{,}200-compound $\log D$ benchmark, establishing it as
+a general property of pool-based active learning rather than a dataset artefact. (iii)~For
+\emph{prediction}, AL provides no advantage over random selection, a cautionary
+result against uncritical adoption. (iv)~Conformal calibration reduces the
+uncertainty calibration error eight-fold (to within $1.3\%$ of nominal coverage)
+and is essential for trustworthy uncertainty, yet does \emph{not} improve AL
+acquisition, which depends only on the uncertainty ranking. The model generalises
+to the four prospective ligands at $R^2=0.69$. We distil these into a practical
+decision guide and release all code and data for exact reproduction.
+\end{abstract}
+
+\section{Introduction}
+Separating rare-earth and $f$-elements by solvent extraction underpins critical-metal
+supply and nuclear-fuel-cycle chemistry, and the key performance descriptor (the
+distribution coefficient $\log D$) is measured one ligand/metal/condition at a time
+by liquid--liquid assay. Each measurement is laborious, so a model that reaches useful
+accuracy, or surfaces the best extractants, from \emph{few} measurements has direct
+practical value. Machine learning for $\log D$ prediction has advanced
+quickly,\cite{Liu_2022,Tetko_2025} and active learning
+(AL)\cite{Settles_2009,Reker_2015} promises to choose the most informative
+experiments next; pool-based AL in particular has accelerated molecular discovery
+and high-throughput screening.\cite{Smith_2018,Graff_2021,Dodds_2024,Antoniuk_2026}
+The discovery of new extractant ligands for $f$-element separation remains largely
+trial-and-error.\cite{Panak_2013} Yet two practitioner-facing questions are usually left
+unanswered on real data: \emph{which} acquisition strategy to use when the goal may be
+accurate prediction \emph{or} discovery of top performers, and \emph{whether} the
+uncertainty estimates that AL relies on are calibrated enough to trust. We address both
+on a real benchmark of 1{,}202 experimental $\log D$ values, with prospective
+validation, and report findings that are useful precisely because several run counter
+to the common framing of AL as a uniformly beneficial drop-in.
+
+\section{Data and Methods}
+\textbf{Dataset.} We use the 1{,}202 experimental lanthanide-extraction $\log D$
+measurements compiled by Liu et al.\cite{Liu_2022} (1{,}085 training + 117 validation),
+with their feature representation: Morgan/ECFP bits and RDKit physicochemical
+descriptors for the ligand, experimental conditions (ligand and acid concentration,
+diluent identity/ratio, temperature), and lanthanide-identity descriptors
+(2{,}291 features per row). Their four subsequently synthesised ligands
+(56 ligand$\times$metal measurements) serve as a strictly prospective external test.
+
+\textbf{Surrogate and uncertainty.} The base model is a random-forest
+regressor\cite{Breiman_2001} (scikit-learn\cite{Pedregosa_2011}; Morgan/ECFP and
+RDKit descriptor features\cite{Rogers_2010,RDKit}); epistemic uncertainty is the
+standard deviation across trees, an ensemble estimator in the spirit of deep
+ensembles.\cite{Lakshminarayanan_2017,Scalia_2020,Hirschfeld_2020} We optionally
+apply split-conformal calibration\cite{Vovk_2005,Lei_2018,Angelopoulos_2023} (a
+distribution-free framework increasingly used in
+cheminformatics\cite{Norinder_2014,Arvidsson_McShane_2024}), computing nonconformity
+scores $|y-\hat{y}|/\hat\sigma$ on a held-out calibration split and rescaling
+$\hat\sigma$ by their empirical quantile so that nominal-$\alpha$ intervals attain
+$\alpha$ coverage.
+
+\textbf{Active-learning protocol.} From a small random seed set we iteratively
+acquire batches and retrain, on a fixed $80/20$ pool/test partition (pool
+$=962$, test $=240$). Acquisition strategies: \emph{random}; \emph{greedy}
+(exploit, maximise predicted $\log D$); \emph{uncertainty} (explore, maximise
+$\hat\sigma$); \emph{UCB} ($\hat\mu+1.5\hat\sigma$); \emph{expected improvement}
+(EI, a standard Bayesian-optimisation acquisition\cite{Jones_1998,Shahriari_2016});
+and a \emph{hybrid} portfolio (half the batch exploit, half explore). We track,
+versus number of measurements, the held-out predictive $R^2$ and the top-10 recall
+(fraction of the ten highest-$\log D$ systems acquired). All curves are averaged over
+six random seeds.
+
+\section{Results and Discussion}
+\textbf{A strong simple baseline.} A random forest on the published features attains
+$R^2=0.942$, RMSE$=0.328$ on the validation split, exceeding the reported deep
+network ($R^2=0.85$, RMSE$=0.53$).\cite{Liu_2022} For this tabular,
+condition-rich representation, ensemble trees are a stronger and far cheaper baseline.
+
+\textbf{The optimal acquisition is objective-dependent (Figure~\ref{fig:al}).} No
+single strategy is best. Exploitation (greedy, UCB) recovers \emph{all} top
+extractants (top-10 recall $=1.00$) but biases the training set toward high-$\log D$
+systems, giving a poor global model ($R^2=0.63$--$0.70$). Exploration and random give
+the best predictive models ($R^2=0.85$--$0.87$) but poor design recall
+($0.38$--$0.50$). EI and the hybrid portfolio sit on the Pareto front (recall
+$0.93$--$0.98$, $R^2\approx0.78$) but dominate neither extreme. Practitioners must
+therefore choose the acquisition by the goal: exploit to \emph{find} extractants,
+explore to \emph{model} them, EI/hybrid to balance.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.92\linewidth]{../figures/real_al.pdf}
+\caption{Active learning on 1{,}202 real $\log D$ measurements. Left: predictive
+$R^2$ vs.\ number of measurements (exploration/random best). Right: top-10 recall
+(exploitation best). No strategy wins both; EI and the hybrid portfolio trace the
+Pareto front. Bands are $\pm1$ s.d.\ over six seeds.}
+\label{fig:al}
+\end{figure}
+
+\textbf{The dichotomy is general (Figure~\ref{fig:lipo}).} To test whether this is
+specific to the $f$-element benchmark, we repeat the protocol on an independent
+dataset, the 4{,}200 octanol--water $\log D$ values from MoleculeNet's Lipophilicity
+set\cite{Wu_2018}, using a different feature representation (Morgan fingerprints plus
+descriptors). The same anti-correlated pattern emerges: exploration and random give
+the best predictive models (final $R^2\approx0.50$) but the lowest design recall
+($0.20$--$0.27$), whereas exploitation (greedy, UCB) gives the best recall
+($0.53$--$0.57$, $2$--$3\times$ random) but the worst predictive models
+($R^2=0.21$--$0.28$); again no strategy wins both. The objective-dependence of the
+optimal acquisition is therefore a general property of pool-based AL for molecular
+property optimisation, not an artefact of one dataset or feature set.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.92\linewidth]{../figures/lipo_al.pdf}
+\caption{Generality. The identical prediction--design dichotomy on an independent
+benchmark (4{,}200 octanol--water $\log D$ values, Morgan-fingerprint features):
+exploration/random best for prediction (left), exploitation best for design
+(right), no strategy dominating.}
+\label{fig:lipo}
+\end{figure}
+
+\textbf{Active learning does not help prediction (a caution).} At every budget,
+random selection matches or beats uncertainty sampling for predictive $R^2$
+(e.g.\ $R^2=0.54$ vs $0.40$ at 100 measurements; both reach $R^2=0.85$ at
+$\approx400$). For building a predictive $\log D$ model, the experimental effort of
+AL is not repaid here, a result worth stating plainly against the assumption that AL
+is uniformly beneficial.
+
+\textbf{Calibration matters for trust, not for acquisition (Figure~\ref{fig:cal}).}
+Raw ensemble uncertainty is badly miscalibrated (mean calibration error $0.103$;
+the nominal-$80\%$ interval covers $90\%$). Split-conformal calibration reduces the
+error eight-fold to $0.013$, attaining nominal coverage. However, calibrating the
+uncertainty leaves AL performance unchanged (final $R^2$ and recall within noise with
+vs.\ without calibration), because acquisition depends only on the \emph{ranking} of
+uncertainty, which monotonic calibration preserves. Calibration is thus essential
+when the uncertainty is reported, used for decision-making, or used to define an
+applicability domain or trigger experiments\cite{Yang_2023,Parrondo_Pizarro_2026,Janet_2019},
+and dispensable when it is used only to rank candidates, a distinction that is easy
+to conflate.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.5\linewidth]{../figures/calibration.pdf}
+\caption{Uncertainty calibration. Raw ensemble uncertainty is miscalibrated
+(calibration error $0.103$); split-conformal calibration attains nominal coverage
+(error $0.013$).}
+\label{fig:cal}
+\end{figure}
+
+\textbf{Prospective validation.} Trained on all 1{,}202 measurements and applied to
+the four independently synthesised ligands, the model attains $R^2=0.687$,
+RMSE$=0.639$, MAE$=0.502$ log units. The drop from the in-domain $R^2=0.94$ to the
+prospective $R^2=0.69$ quantifies the realistic generalisation gap to genuinely new
+chemotypes and is, to our knowledge, among the few prospective tests reported for
+extractant-property models.
+
+\textbf{Practical guidance.} (1)~Start with an ensemble-tree baseline. (2)~Pick the
+acquisition by objective: exploit for discovery, explore/random for a predictive
+model, EI for balance. (3)~Do not expect AL to reduce the measurements needed for
+accurate prediction. (4)~Calibrate (e.g.\ conformally) whenever the uncertainty is
+reported or acted upon, but not merely to improve acquisition.
+
+\section{Limitations}
+The objective-dependent dichotomy is shown on two independent datasets
+($f$-element extraction and Lipophilicity) with different feature sets, but broader
+chemistries and property classes remain to be tested. AL here is pool-based
+selection over measured candidates, not open-ended generative design. Prospective validation covers four ligands. The conclusions
+concern $\log D$ regression and may differ for classification or multi-objective
+selectivity targets.
+
+\section{Conclusion}
+On real experimental extractant data with prospective validation, we show that a
+simple ensemble beats a published deep network, that the best active-learning
+acquisition depends on whether the goal is prediction or discovery (with no strategy
+dominating both), that active learning offers no predictive-accuracy advantage over
+random selection, and that uncertainty calibration is essential for trust but
+irrelevant to acquisition. These give practitioners an evidence-based decision guide
+and a reproducible benchmark for sample-efficient extractant discovery.
+
+\section*{Data and Software Availability}
+The dataset is from ref.~\citenum{Liu_2022}; all analysis code, splits, and figure-
+and number-generating scripts are released and archived (concept DOI
+10.5281/zenodo.20764583), reproducing every value herein on a single laptop.
+
+\begin{acknowledgement}
+Computations were run on a single Apple M4 laptop. The author conceived and directed
+the study, curated the data, made the scientific and methodological decisions, and
+verified all results; in accordance with ACS policy, the author discloses that a
+generative AI assistant (Claude, Anthropic) was used under the author's direction for
+code implementation, experiment execution and analysis, and manuscript drafting. The
+author is accountable for the content.
+\end{acknowledgement}
+
+\clearpage
+\bibliography{refs_b}
+
+\end{document}

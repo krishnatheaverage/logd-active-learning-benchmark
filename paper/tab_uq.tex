@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{Model and uncertainty-estimator comparison on a ligand-disjoint split (train/calibration/test $=55/20/25$ of ligands). Uncertainty-ranking quality is the Spearman correlation between predicted $\sigma$ and realised absolute error; higher is better. Coverage is the empirical coverage of split-conformal 80\% intervals. Mean over four seeds.}
+\label{tab:uq}
+\begin{tabular}{lcccc}
+\toprule
+Model & $R^2$ & conformal & rank quality & enrich. \\
+ & & 80\% cov. & $\rho(|e|,\sigma)$ & factor \\
+\midrule
+Random forest & 0.15 & 0.91 & 0.22 & 7.5 \\
+Quantile RF & 0.14 & 0.91 & 0.22 & 7.5 \\
+Gaussian process & -0.03 & 0.95 & 0.23 & 3.7 \\
+Gradient boosting & 0.22 & 0.91 & 0.28 & 7.5 \\
+MC-dropout BNN & 0.12 & 0.94 & 0.06 & 6.6 \\
+\bottomrule
+\end{tabular}
+\end{table}

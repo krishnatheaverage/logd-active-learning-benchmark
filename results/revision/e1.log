@@ -1,0 +1,6 @@
+random  R2 0.884+-0.027
+ligand  R2 0.201+-0.307  RMSE 1.140
+source  R2 -0.034+-0.804  RMSE 1.224
+family  R2 -0.242+-0.497  RMSE 1.312
+prospective (4 new ligands) R2 0.697
+E1_DONE

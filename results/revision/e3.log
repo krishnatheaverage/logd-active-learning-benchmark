@@ -1,0 +1,7 @@
+random       rec_row 0.45  rec_pair 0.72  rec_lig 0.95  enrich 0.0  hit 0.26
+greedy       rec_row 1.00  rec_pair 0.88  rec_lig 0.82  enrich 0.0  hit 0.60
+uncertainty  rec_row 0.42  rec_pair 0.85  rec_lig 0.93  enrich 0.0  hit 0.26
+ucb          rec_row 1.00  rec_pair 0.90  rec_lig 0.88  enrich 0.0  hit 0.59
+ei           rec_row 0.93  rec_pair 0.90  rec_lig 0.97  enrich 0.0  hit 0.47
+hybrid       rec_row 0.80  rec_pair 0.87  rec_lig 0.97  enrich 0.0  hit 0.52
+E3_DONE

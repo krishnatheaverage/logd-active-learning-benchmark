@@ -1,4 +1,4 @@
-\documentclass[journal=jcisd8,manuscript=suppinfo]{achemso}
+\documentclass[journal=acsodf,manuscript=suppinfo]{achemso}
 \usepackage{amsmath,booktabs,graphicx,siunitx}
 \author{Krishna Harish}
 \affiliation{Lawrence E. Elkins High School, Missouri City, Texas, USA}
@@ -109,12 +109,30 @@ RMSE$=0.328$ on the validation split (cf.\ the reported deep network $R^2=0.85$,
 RMSE$=0.53$). Trained on all 1{,}202 measurements and applied to the four
 prospective ligands, it attains $R^2=0.687$, RMSE$=0.639$, MAE$=0.502$ log units.
 
+\section{Revision experiments}
+The following tables collect the full results of the leakage-controlled evaluation,
+the definition-resolved discovery metrics, the subgroup-resolved calibration, and the
+model/uncertainty-estimator comparison added in revision. Every value is generated
+from the released results files by \texttt{revision/make\_tables.py}.
+
+\input{tab_splits}
+\input{tab_recall}
+\input{tab_calib}
+\input{tab_uq}
+
 \section{Reproduction}
-All code is released (concept DOI 10.5281/zenodo.20764583). The experiments are
-reproduced by \texttt{src/05\_active\_learning/}: \texttt{real\_data.py} (baseline),
-\texttt{real\_al.py} ($f$-element AL), \texttt{lipo\_al.py} (Lipophilicity AL),
-\texttt{al\_calibration.py} (calibration), \texttt{prospective.py} (prospective
-validation). The $f$-element source data are from Liu et al.\ (cited); the
-Lipophilicity set is from MoleculeNet.
+All code is released at
+\url{https://github.com/krishnatheaverage/logd-active-learning-benchmark} and archived
+on Zenodo. The original benchmark is reproduced by \texttt{src/}: \texttt{real\_data.py}
+(baseline), \texttt{real\_al.py} ($f$-element AL), \texttt{lipo\_al.py} (Lipophilicity
+AL), \texttt{al\_calibration.py} (calibration), \texttt{prospective.py} (prospective
+validation). The revision experiments are reproduced by \texttt{revision/}:
+\texttt{data\_ext.py} (recovers ligand/source/lanthanide/condition group structure),
+\texttt{e1\_splits.py} (leakage-controlled splits), \texttt{e2\_ligand\_batch.py}
+(ligand-batch acquisition), \texttt{e3\_recall\_metrics.py} (recall definitions and
+discovery metrics), \texttt{e4\_calibration.py} (subgroup calibration and Mondrian),
+\texttt{e5\_uq\_baselines.py} (model/UQ comparison), with \texttt{make\_figures.py} and
+\texttt{make\_tables.py} regenerating every figure and table. The $f$-element source
+data are from Liu et al.\ (cited); the Lipophilicity set is from MoleculeNet.
 
 \end{document}

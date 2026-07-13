@@ -1,0 +1,7 @@
+wrote tab_splits
+wrote tab_recall
+wrote tab_uq
+wrote tab_calib
+wrote revision_macros.tex with 28 macros
+MACROS: {'splitRandomRow': '0.88', 'splitLigand': '0.20', 'splitSource': '-0.03', 'splitFamily': '-0.24', 'splitProspective': '0.70', 'nLigands': '93', 'nSources': '45', 'nFamilies': '20', 'recallGreedyRow': '1.00', 'recallGreedyLig': '0.82', 'recallRandomRow': '0.45', 'recallRandomLig': '0.95', 'bestRankModel': 'gradient boosting', 'bestRankRho': '0.28', 'covRaw': '0.72', 'covConformal': '0.90', 'covMondrian': '0.87', 'covProspective': '0.88', 'rankCorr': '0.85', 'mceRaw': '0.103', 'mceConformal': '0.013', 'mceFold': '8', 'batchExploitRtwo': '0.29', 'batchExploitRecall': '1.00', 'batchExploreRtwo': '0.30', 'batchExploreRecall': '0.83', 'batchEIrecall': '0.98', 'batchEIRtwo': '0.13'}
+TABLES_DONE

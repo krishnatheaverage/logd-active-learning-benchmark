@@ -1,0 +1,20 @@
+seed 0 RF   R2 0.065 RMSE 1.234 cov80 0.78 rho(err,sig) 0.10 EF 8.4
+seed 0 QRF  R2 0.033 RMSE 1.255 cov80 0.80 rho(err,sig) 0.08 EF 8.4
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/gaussian_process/kernels.py:455: ConvergenceWarning: The optimal value found for dimension 0 of parameter k1__k1__constant_value is close to the specified upper bound 10.0. Increasing the bound and calling fit again may find a better value.
+  warnings.warn(
+seed 0 GP   R2 -0.233 RMSE 1.418 cov80 0.90 rho(err,sig) 0.02 EF 0.0
+seed 0 GBM  R2 0.262 RMSE 1.096 cov80 0.83 rho(err,sig) 0.37 EF 8.4
+seed 0 BNN  R2 -0.063 RMSE 1.316 cov80 0.94 rho(err,sig) 0.15 EF 0.0
+seed 1 RF   R2 0.308 RMSE 1.088 cov80 0.97 rho(err,sig) 0.30 EF 14.0
+seed 1 QRF  R2 0.297 RMSE 1.097 cov80 0.98 rho(err,sig) 0.40 EF 14.0
+seed 1 GP   R2 0.316 RMSE 1.081 cov80 1.00 rho(err,sig) 0.46 EF 11.2
+seed 1 GBM  R2 0.209 RMSE 1.163 cov80 0.95 rho(err,sig) 0.12 EF 14.0
+seed 1 BNN  R2 0.130 RMSE 1.220 cov80 0.89 rho(err,sig) -0.06 EF 11.2
+seed 2 RF   R2 0.073 RMSE 1.111 cov80 0.97 rho(err,sig) 0.25 EF 0.0
+seed 2 QRF  R2 0.082 RMSE 1.106 cov80 0.97 rho(err,sig) 0.18 EF 0.0
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/gaussian_process/kernels.py:455: ConvergenceWarning: The optimal value found for dimension 0 of parameter k1__k1__constant_value is close to the specified upper bound 10.0. Increasing the bound and calling fit again may find a better value.
+  warnings.warn(
+seed 2 GP   R2 -0.182 RMSE 1.255 cov80 0.96 rho(err,sig) 0.22 EF 0.0
+seed 2 GBM  R2 0.196 RMSE 1.035 cov80 0.95 rho(err,sig) 0.33 EF 0.0
+seed 2 BNN  R2 0.297 RMSE 0.968 cov80 0.98 rho(err,sig) 0.10 EF 8.6
+E5_DONE
