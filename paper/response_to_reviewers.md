@@ -135,6 +135,16 @@ uncertainty-ranking quality (ρ = 0.28), while the Gaussian process is weakest. 
 dichotomy and the calibration-vs-acquisition distinction hold across estimators, i.e.
 they are properties of pool-based AL, not of the random forest.
 
+On the reviewer's point that "a high distribution coefficient alone is not always
+sufficient," we added a **selectivity analysis** (new subsection + figure). Per ligand
+we compute the separation factor as the spread of logD across the 14 lanthanides
+(range up to 6.1 log units over 63 ligands). Ranking ligands by extraction strength
+(max logD) is **not** the same as ranking by selectivity (Spearman 0.63); only **4 of
+the top-10** strongest extractants are also among the top-10 most selective, and we
+give the strength–selectivity Pareto front. Optimizing logD alone therefore misses
+most discriminating ligands. A full selectivity-aware acquisition loop is noted as a
+natural extension.
+
 ### 1.6 / 1.7 — More figures and tables
 **Response.** The revision adds **five figures** (splits, ligand-batch, recall
 definitions, subgroup calibration, model/UQ comparison) and **four tables** (splits,

@@ -310,6 +310,30 @@ realised error). Error bars are $\pm1$ s.d.\ over four seeds.}
 
 \input{tab_uq}
 
+\textbf{A high $\log D$ is not sufficient: selectivity
+(Figure~\ref{fig:sel}).} In separations chemistry the objective is not a large
+distribution coefficient per se but \emph{discrimination} between lanthanides. For each
+of the \selNlig{} ligands measured against at least five lanthanides we compute a
+separation factor as the spread of $\log D$ across metals (the log of the best/worst
+distribution-coefficient ratio), which spans up to \selMax{} log units. Ranking
+ligands by extraction strength (max $\log D$) is not the same as ranking by
+selectivity: the two correlate only moderately (Spearman $\selCorr{}$), and only
+\selOverlap{} of the top-10 strongest extractants are also among the top-10 most
+selective. Optimising $\log D$ alone therefore misses most of the discriminating
+ligands, and the design objective (and any AL acquisition built on it) should target
+selectivity directly; the $\selNpareto{}$ Pareto-optimal ligands in the
+strength--selectivity plane are the appropriate design targets. A full multi-objective
+selectivity-aware acquisition is a natural extension of this benchmark.
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.7\linewidth]{../figures/selectivity.pdf}
+\caption{Extraction strength (max $\log D$) versus selectivity (log separation factor,
+max$-$min $\log D$ across lanthanides) for each ligand. The two are only moderately
+correlated, so a high $\log D$ does not imply a selective extractant; diamonds mark the
+Pareto-optimal ligands.}
+\label{fig:sel}
+\end{figure}
+
 \textbf{Prospective validation.} Trained on all 1{,}202 measurements and applied to the
 four independently synthesised ligands, the model attains $R^2=\splitProspective{}$,
 RMSE$=0.639$, MAE$=0.502$ log units. Read together with the grouped-CV collapse above,
@@ -325,6 +349,8 @@ system; the discovery ranking depends on it. (4)~Do not expect AL to reduce the
 measurements needed for accurate prediction. (5)~Calibrate (e.g.\ conformally) whenever
 the uncertainty is reported or acted upon, and use group-conditional calibration when
 subgroup coverage matters; only non-monotone calibration changes acquisition.
+(6)~When the goal is separation, optimise selectivity (the $\log D$ spread across
+metals), not $\log D$ alone: the two rankings diverge.
 
 \section{Limitations}
 The objective-dependent dichotomy is shown on two independent datasets with different
@@ -332,8 +358,10 @@ feature sets, but broader chemistries remain to be tested. Because SMILES are no
 distributed with the benchmark, our structural split uses ECFP-Tanimoto families as a
 scaffold-split proxy rather than exact Bemis--Murcko scaffolds. AL here is pool-based
 selection over measured candidates, not open-ended generative design, and prospective
-validation covers four ligands. The conclusions concern $\log D$ regression and may
-differ for classification or multi-objective selectivity targets.
+validation covers four ligands. We characterise selectivity (the spread of $\log D$
+across lanthanides) and show it diverges from raw $\log D$, but a full multi-objective,
+selectivity-aware acquisition loop is left as an extension; the conclusions concern
+$\log D$ regression and may differ for classification targets.
 
 \section{Conclusion}
 On real experimental extractant data with prospective validation, we show that a

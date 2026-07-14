@@ -1,0 +1,5 @@
+seed 0 RF   R2 0.065 RMSE 1.234 cov80 0.78 rho(err,sig) 0.10 EF 8.4
+seed 0 QRF  R2 0.033 RMSE 1.255 cov80 0.80 rho(err,sig) 0.08 EF 8.4
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/sklearn/gaussian_process/kernels.py:455: ConvergenceWarning: The optimal value found for dimension 0 of parameter k1__k1__constant_value is close to the specified upper bound 10.0. Increasing the bound and calling fit again may find a better value.
+  warnings.warn(
+seed 0 GP   R2 -0.233 RMSE 1.418 cov80 0.90 rho(err,sig) 0.02 EF 0.0

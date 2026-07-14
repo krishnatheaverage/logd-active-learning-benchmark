@@ -1,14 +1,14 @@
 \documentclass[journal=acsodf,manuscript=article]{achemso}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL main_original.tex   Mon Jul 13 12:55:36 2026
-%DIF ADD main.tex            Mon Jul 13 13:35:00 2026
+%DIF ADD main.tex            Tue Jul 14 12:18:19 2026
 \usepackage[version=4]{mhchem}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{siunitx}
 
-%DIF 8a8-38
+%DIF 8a8-43
 % auto-generated in-text numbers; do not edit by hand %DIF > 
 \newcommand{\splitRandomRow}{0.88} %DIF > 
 \newcommand{\splitLigand}{0.20} %DIF > 
@@ -38,6 +38,11 @@
 \newcommand{\batchExploreRecall}{0.83} %DIF > 
 \newcommand{\batchEIrecall}{0.98} %DIF > 
 \newcommand{\batchEIRtwo}{0.13} %DIF > 
+\newcommand{\selCorr}{0.63} %DIF > 
+\newcommand{\selOverlap}{4} %DIF > 
+\newcommand{\selNpareto}{4} %DIF > 
+\newcommand{\selNlig}{63} %DIF > 
+\newcommand{\selMax}{6.1} %DIF > 
  %DIF > 
  %DIF > 
 %DIF -------
@@ -501,30 +506,27 @@ evens the subgroups. Crucially, Mondrian
 }\emph{\DIFadd{reorders}} \DIFadd{the uncertainty ranking (Spearman $\rho=\rankCorr{}$ vs the global
 factor), so locally adaptive calibration }\emph{\DIFadd{can}} \DIFadd{change AL acquisition even though a
 global factor cannot. Coverage on the prospective ligands is $\covProspective{}$.
-}\DIFaddend Calibration is thus essential when the uncertainty is reported \DIFdelbegin \DIFdel{, used for decision-making, or used to define an
-applicability domain or trigger experiments\mbox{%DIFAUXCMD
+}\DIFaddend Calibration is thus essential when the uncertainty is reported \DIFdelbegin \DIFdel{, used for decision-making, or used to define an applicability domain or trigger experiments\mbox{%DIFAUXCMD
 \cite{Yang_2023,Parrondo_Pizarro_2026,Janet_2019}}\hskip0pt%DIFAUXCMD
-, anddispensable when it is used only to rank candidates}\DIFdelend \DIFaddbegin \DIFadd{or acted
+, and dispensable when it is used only to rank candidates, a distinction that is easy
+to }\DIFdelend \DIFaddbegin \DIFadd{or acted
 upon\mbox{%DIFAUXCMD
 \cite{Janet_2019,Yang_2023}}\hskip0pt%DIFAUXCMD
 , and, for acquisition, only non-monotone calibration
-matters}\DIFaddend , a distinction \DIFdelbegin \DIFdel{that is }\DIFdelend easy to conflate.
+matters, a distinction easy to }\DIFaddend conflate.
 
 \begin{figure}[htbp]\centering
 \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=0.5\linewidth]{../figures/calibration.pdf}
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \includegraphics[width=0.8\linewidth]{../figures/calibration_subgroups.pdf}
-\DIFaddendFL \caption{\DIFdelbeginFL \DIFdelFL{Uncertainty calibration}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Subgroup coverage of nominal-$80\%$ intervals under a ligand-disjoint split}\DIFaddendFL .
-Raw \DIFdelbeginFL \DIFdelFL{ensemble uncertainty is miscalibrated
-(calibration error $0.103$)}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{intervals under-cover}\DIFaddendFL ; \DIFdelbeginFL \DIFdelFL{split-conformal calibration attains nominal }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{a single global conformal factor restores average }\DIFaddendFL coverage
-\DIFaddbeginFL \DIFaddFL{but the high-$\log D$ region remains uneven; group-conditional }\DIFaddendFL (\DIFdelbeginFL \DIFdelFL{error $0.013$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Mondrian}\DIFaddendFL ) \DIFaddbeginFL \DIFaddFL{conformal
-balances the subgroups}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Dashed line is the nominal target.}\DIFaddendFL }
-\DIFdelbeginFL %DIFDELCMD < \label{fig:cal}
-%DIFDELCMD < %%%
-\DIFdelendFL \DIFaddbeginFL \label{fig:calsub}
-\DIFaddendFL \end{figure}
+%DIFDELCMD < \caption{%%%
+\DIFdelFL{Uncertainty calibration. }\DIFdelendFL \DIFaddbeginFL \includegraphics[width=0.8\linewidth]{../figures/calibration_subgroups.pdf}
+\caption{\DIFaddFL{Subgroup coverage of nominal-$80\%$ intervals under a ligand-disjoint split.
+Raw intervals under-cover; a single global conformal factor restores average coverage
+but the high-$\log D$ region remains uneven; group-conditional (Mondrian) conformal
+balances the subgroups. Dashed line is the nominal target.}}
+\label{fig:calsub}
+\end{figure}
 
-\DIFaddbegin \begin{table}[htbp]
+\begin{table}[htbp]
 \centering
 \caption{\DIFaddFL{Uncertainty calibration under a realistic ligand-disjoint split (nominal coverage 80\%). Raw ensemble intervals under-cover; a single global split-conformal factor restores average coverage but leaves subgroup imbalance, which group-conditional (Mondrian) conformal reduces. Mean over eight seeds. For reference, on the easier row-level split the raw mean calibration error is 0.103 and conformal reduces it to 0.013.}}
 \label{tab:calib}
@@ -532,7 +534,8 @@ balances the subgroups}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{Dashed line is th
 \toprule
 \DIFaddFL{Method }& \DIFaddFL{global }& \DIFaddFL{low $\log D$ }& \DIFaddFL{mid $\log D$ }& \DIFaddFL{high $\log D$ }\\
 \midrule
-\DIFaddFL{Raw }& \DIFaddFL{0.72 }& \DIFaddFL{-- }& \DIFaddFL{-- }& \DIFaddFL{-- }\\
+\DIFaddendFL Raw \DIFdelbeginFL \DIFdelFL{ensemble uncertainty is miscalibrated
+}\DIFdelendFL \DIFaddbeginFL & \DIFaddFL{0.72 }& \DIFaddFL{-- }& \DIFaddFL{-- }& \DIFaddFL{-- }\\
 \DIFaddFL{Global conformal }& \DIFaddFL{0.90 }& \DIFaddFL{0.87 }& \DIFaddFL{0.92 }& \DIFaddFL{0.87 }\\
 \DIFaddFL{Mondrian conformal }& \DIFaddFL{0.87 }& \DIFaddFL{0.96 }& \DIFaddFL{0.82 }& \DIFaddFL{0.88 }\\
 \bottomrule
@@ -580,7 +583,35 @@ realised error). Error bars are $\pm1$ s.d.\ over four seeds.}}
 \end{table}
 
 
-\DIFaddend \textbf{Prospective validation.} Trained on all 1{,}202 measurements and applied to the
+\textbf{\DIFadd{A high $\log D$ is not sufficient: selectivity
+(Figure~\ref{fig:sel}).}} \DIFadd{In separations chemistry the objective is not a large
+distribution coefficient per se but }\emph{\DIFadd{discrimination}} \DIFadd{between lanthanides. For each
+of the \selNlig{} ligands measured against at least five lanthanides we compute a
+separation factor as the spread of $\log D$ across metals (the log of the best/worst
+distribution-coefficient ratio), which spans up to \selMax{} log units. Ranking
+ligands by extraction strength (max $\log D$) is not the same as ranking by
+selectivity: the two correlate only moderately (Spearman $\selCorr{}$), and only
+\selOverlap{} of the top-10 strongest extractants are also among the top-10 most
+selective. Optimising $\log D$ alone therefore misses most of the discriminating
+ligands, and the design objective (and any AL acquisition built on it) should target
+selectivity directly; the $\selNpareto{}$ Pareto-optimal ligands in the
+strength--selectivity plane are the appropriate design targets. A full multi-objective
+selectivity-aware acquisition is a natural extension of this benchmark.
+}
+
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.7\linewidth]{../figures/selectivity.pdf}
+\caption{\DIFaddFL{Extraction strength }\DIFaddendFL (\DIFdelbeginFL \DIFdelFL{calibration error $0.103$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{max $\log D$}\DIFaddendFL ) \DIFdelbeginFL \DIFdelFL{; split-conformal calibration attains nominal coverage
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{versus selectivity }\DIFaddendFL (\DIFdelbeginFL \DIFdelFL{error $0.013$}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{log separation factor,
+max$-$min $\log D$ across lanthanides}\DIFaddendFL ) \DIFaddbeginFL \DIFaddFL{for each ligand}\DIFaddendFL . \DIFaddbeginFL \DIFaddFL{The two are only moderately
+correlated, so a high $\log D$ does not imply a selective extractant; diamonds mark the
+Pareto-optimal ligands.}\DIFaddendFL }
+\DIFdelbeginFL %DIFDELCMD < \label{fig:cal}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \label{fig:sel}
+\DIFaddendFL \end{figure}
+
+\textbf{Prospective validation.} Trained on all 1{,}202 measurements and applied to the
 four independently synthesised ligands, the model attains \DIFdelbegin \DIFdel{$R^2=0.687$}\DIFdelend \DIFaddbegin \DIFadd{$R^2=\splitProspective{}$}\DIFaddend ,
 RMSE$=0.639$, MAE$=0.502$ log units. \DIFdelbegin \DIFdel{The drop from the in-domain $R^2=0.94$ to the
 prospective $R^2=0.69$ quantifies the realistic generalisation gap to genuinely new
@@ -595,8 +626,12 @@ generalisation estimate}\DIFaddend . (2)~Pick the acquisition by objective: expl
 explore/random for a predictive model, EI for balance. (3)~\DIFaddbegin \DIFadd{State the unit of a ``top''
 system; the discovery ranking depends on it. (4)~}\DIFaddend Do not expect AL to reduce the
 measurements needed for accurate prediction. (\DIFdelbegin \DIFdel{4}\DIFdelend \DIFaddbegin \DIFadd{5}\DIFaddend )~Calibrate (e.g.\ conformally) whenever
-the uncertainty is reported or acted upon, \DIFdelbegin \DIFdel{but not merely to improve }\DIFdelend \DIFaddbegin \DIFadd{and use group-conditional calibration when
-subgroup coverage matters; only non-monotone calibration changes }\DIFaddend acquisition.
+the uncertainty is reported or acted upon, \DIFdelbegin \DIFdel{but not merely to improve acquisition.
+}\DIFdelend \DIFaddbegin \DIFadd{and use group-conditional calibration when
+subgroup coverage matters; only non-monotone calibration changes acquisition.
+(6)~When the goal is separation, optimise selectivity (the $\log D$ spread across
+metals), not $\log D$ alone: the two rankings diverge.
+}\DIFaddend 
 
 \section{Limitations}
 The objective-dependent dichotomy is shown on two independent datasets \DIFdelbegin \DIFdel{($f$-element extraction and Lipophilicity) }\DIFdelend with different
@@ -604,8 +639,11 @@ feature sets, but broader chemistries \DIFdelbegin \DIFdel{and property classes 
 distributed with the benchmark, our structural split uses ECFP-Tanimoto families as a
 scaffold-split proxy rather than exact Bemis--Murcko scaffolds. }\DIFaddend AL here is pool-based
 selection over measured candidates, not open-ended generative design\DIFdelbegin \DIFdel{. Prospective }\DIFdelend \DIFaddbegin \DIFadd{, and prospective
-}\DIFaddend validation covers four ligands. The conclusions concern $\log D$ regression and may
-differ for classification or multi-objective selectivity targets.
+}\DIFaddend validation covers four ligands. \DIFdelbegin \DIFdel{The }\DIFdelend \DIFaddbegin \DIFadd{We characterise selectivity (the spread of $\log D$
+across lanthanides) and show it diverges from raw $\log D$, but a full multi-objective,
+selectivity-aware acquisition loop is left as an extension; the }\DIFaddend conclusions concern
+$\log D$ regression and may differ for classification \DIFdelbegin \DIFdel{or multi-objective
+selectivity }\DIFdelend targets.
 
 \section{Conclusion}
 On real experimental extractant data with prospective validation, we show that a

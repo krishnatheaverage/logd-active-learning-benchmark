@@ -172,11 +172,23 @@ def batch_macros(macros):
     macros["batchEIRtwo"] = f(r.get("ei", r["hybrid"])["r2_mean"][-1])
 
 
+def selectivity_macros(macros):
+    d = _load("e6_selectivity.json")
+    if not d:
+        return
+    macros["selCorr"] = f(d["spearman_strength_vs_selectivity"])
+    macros["selOverlap"] = str(d["top10_overlap"])
+    macros["selNpareto"] = str(d["n_pareto"])
+    macros["selNlig"] = str(d["n_ligands"])
+    macros["selMax"] = f(d["selectivity_range"][1], 1)
+
+
 def main():
     macros = {}
     tabs = {"tab_splits": table_splits(macros), "tab_recall": table_recall(macros),
             "tab_uq": table_uq(macros), "tab_calib": table_calib(macros)}
     batch_macros(macros)
+    selectivity_macros(macros)
     for name, tex in tabs.items():
         if tex:
             open(f"{P}/{name}.tex", "w").write(tex + "\n")

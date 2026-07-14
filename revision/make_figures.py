@@ -128,6 +128,32 @@ def fig_calibration_subgroups():
     print("wrote calibration_subgroups")
 
 
+def fig_selectivity():
+    d = json.load(open(f"{R}/e6_selectivity.json"))
+    df = pd.DataFrame(d["points"])
+    df["frontier"] = np.where(df["pareto"], "Pareto-optimal", "dominated")
+    g = (ggplot(df, aes("maxlogD", "selectivity"))
+         + geom_point(aes(shape="frontier", size="frontier"), fill="white", stroke=0.6)
+         + scale_shape_manual(values=["o", "D"])
+         + labs(x="extraction strength (max $\\log D$ over lanthanides)",
+                y="selectivity (log separation factor,\nmax$-$min $\\log D$)",
+                shape="", size="",
+                title="High $\\log D$ $\\neq$ high selectivity (Spearman "
+                      + f"{d['spearman_strength_vs_selectivity']:.2f}, "
+                      + f"top-10 overlap {d['top10_overlap']}/10)")
+         + theme_bw(base_size=11)
+         + theme(figure_size=(6.4, 3.6), legend_position="right",
+                 plot_title=element_text(weight="bold", size=9)))
+    try:
+        from plotnine import scale_size_manual
+        g = g + scale_size_manual(values=[1.6, 3.2])
+    except Exception:
+        pass
+    g.save(f"{F}/selectivity.pdf", dpi=300, verbose=False)
+    g.save(f"{F}/selectivity.png", dpi=150, verbose=False)
+    print("wrote selectivity")
+
+
 def fig_uq_models():
     d = json.load(open(f"{R}/e5_uq_baselines.json"))["results"]
     rows = []
@@ -154,9 +180,10 @@ def fig_uq_models():
 
 if __name__ == "__main__":
     import sys
-    todo = sys.argv[1:] or ["splits", "ligand_batch", "recall_defs", "calibration_subgroups", "uq_models"]
+    todo = sys.argv[1:] or ["splits", "ligand_batch", "recall_defs", "calibration_subgroups", "uq_models", "selectivity"]
     fns = dict(splits=fig_splits, ligand_batch=fig_ligand_batch, recall_defs=fig_recall_defs,
-               calibration_subgroups=fig_calibration_subgroups, uq_models=fig_uq_models)
+               calibration_subgroups=fig_calibration_subgroups, uq_models=fig_uq_models,
+               selectivity=fig_selectivity)
     for t in todo:
         try:
             fns[t]()
