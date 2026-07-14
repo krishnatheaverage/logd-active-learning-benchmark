@@ -29,7 +29,12 @@ across trees.
 \textbf{Conformal calibration.} Split-conformal: 20\% of the training data held out
 as a calibration set; nonconformity scores $s_i=|y_i-\hat\mu_i|/\hat\sigma_i$; the
 calibrated interval half-width is $q_\alpha\hat\sigma$ with $q_\alpha$ the empirical
-$\alpha$-quantile of $\{s_i\}$.
+$\alpha$-quantile of $\{s_i\}$. Within the active-learning loop the calibration set is
+drawn from the already-revealed pool at each budget and is disjoint from the fixed
+held-out test set, so the rescaling never uses test data and never leaks from the
+unrevealed pool. The subgroup-coverage analysis (main text, Table~3) additionally uses
+a ligand-disjoint train/calibration/test partition, so calibration, training, and
+testing share no ligand.
 
 \textbf{Active-learning protocol.} Fixed $80/20$ pool/test split. $f$-element:
 seed $=25$, batch $=15$, budget $=420$. Lipophilicity: seed $=40$, batch $=25$,
